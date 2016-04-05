@@ -5,17 +5,30 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/30 18:39:28 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/01 12:27:53 by jubarbie         ###   ########.fr       */
+/*   Created: 2016/04/05 20:11:28 by jubarbie          #+#    #+#             */
+/*   Updated: 2016/04/05 20:44:43 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "mlx.h"
 #include "fdf.h"
 #include "libft.h"
+
+void	refresh_screen(t_param *param)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < WIN_Y)
+	{
+		x = -1;
+		while (++x < WIN_X)
+			mlx_pixel_put(MLX, WIN, x, y, 0x00000000);
+	}
+}
 
 void	img_put_pixel(t_param *param, int x, int y, unsigned int color)
 {
@@ -37,8 +50,9 @@ t_pix	get_pix(t_param *param, int i, int j)
 	int		z;
 
 	z = ft_atoi(MAP[j][i]) * ALT;
-	pix.x = (CT1 * (i * 10 * ZOOM) - CT2 * (j * 10 * ZOOM));
-	pix.y = ((CT1 / PERS) * (i * 10 * ZOOM) + (CT2 / PERS) * (j * 10 * ZOOM) - (z * (ZOOM / 2)));
+	pix.x = (CT1 * i * 10 * ZOOM) - (CT2 * j * 10 * ZOOM);
+	pix.y = ((CT1 / PERS) * (i * 10 * ZOOM) + (CT2 / PERS) * (j * 10 * ZOOM) -
+			(z * (ZOOM / 2)));
 	if (z < 0)
 		pix.color = mlx_get_color_value(MLX, 0x008A084B);
 	else if (z)
@@ -50,18 +64,17 @@ t_pix	get_pix(t_param *param, int i, int j)
 
 void	get_img_param(t_param *param)
 {
-	WIDTH = get_pix(param, MAP_X - 1, 0).x - get_pix(param, 0, MAP_Y - 1).x + 10;
-	HEIGHT = (get_pix(param, MAP_X - 1, MAP_Y - 1).y - get_pix(param, 0, 0).y + 10) * 2;
-	POSX = (WIN_X / 2) - (WIDTH / 2);
-	POSY = (WIN_Y / 2) - (HEIGHT / 2);
-	printf("WIDTH:%d\nHEIGHT:%d\n", WIDTH, HEIGHT);
+	WIDTH = get_pix(param, MAP_X - 1, 0).x -
+			get_pix(param, 0, MAP_Y - 1).x + 10;
+	HEIGHT = 10000;
+	GX = (WIN_X / 2) - (WIDTH / 2);
+	GY = (WIN_Y / 2) - (HEIGHT / 2);
 }
 
 int		create_img(t_param *param)
 {
-	int				i;
-	int				j;
-	unsigned int	color;
+	int	i;
+	int	j;
 
 	j = -1;
 	mlx_destroy_image(MLX, IMG);
@@ -73,7 +86,6 @@ int		create_img(t_param *param)
 		i = -1;
 		while (++i < MAP_X)
 		{
-			color = mlx_get_color_value(MLX, 0x00FF0000);
 			if (j < (MAP_Y - 1))
 				img_draw_line(param, get_pix(param, i, j),
 													get_pix(param, i, j + 1));
@@ -82,6 +94,7 @@ int		create_img(t_param *param)
 													get_pix(param, i + 1, j));
 		}
 	}
-	mlx_put_image_to_window(MLX, WIN, IMG, POSX, POSY);
+	mlx_put_image_to_window(MLX, WIN, BIMG, 0, 0);
+	mlx_put_image_to_window(MLX, WIN, IMG, GX + POSX, GY + POSY);
 	return (0);
 }

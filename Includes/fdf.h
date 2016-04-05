@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 10:48:32 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/01 12:17:34 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/04/05 20:45:36 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # define WIN param->win
 # define POSX param->pos_x
 # define POSY param->pos_y
+# define GAPX param->gap_x
+# define GAPY param->gap_y
+# define GX param->gx
+# define GY param->gy
 # define WIN_X param->win_x
 # define WIN_Y param->win_y
 # define WIDTH param->width
@@ -34,16 +38,22 @@
 # define IMG_ADDR param->img_addr
 # define PERS param->pers
 # define ZOOM param->zoom
+# define BIMG param->bimg
 
 typedef struct	s_param
 {
 	void	*mlx;
 	void	*win;
 	void	*img;
+	void	*bimg;
 	int		win_x;
 	int		win_y;
 	int		pos_x;
 	int		pos_y;
+	int		gap_x;
+	int		gap_y;
+	int		gx;
+	int		gy;
 	int		width;
 	int		height;
 	float	ct1;
@@ -67,11 +77,13 @@ typedef	struct	s_pix
 	unsigned int	color;
 }				t_pix;
 
-t_param	*init_param(int size_x, int size_y, char *title, char *file_name);
-void	img_put_pixel(t_param *param, int x, int y, unsigned int color);
-void	img_draw_line(t_param *param, t_pix p1, t_pix p2);
-t_pix   get_pix(t_param *param, int i, int j);
-void    get_img_param(t_param *param);
-int		create_img(t_param *param);
+t_param			*init_param(int size_x, int size_y, char *title,
+				char *file_name);
+void			init_pos(t_param *param);
+void			img_put_pixel(t_param *param, int x, int y, unsigned int color);
+void			img_draw_line(t_param *param, t_pix p1, t_pix p2);
+t_pix			get_pix(t_param *param, int i, int j);
+void			get_img_param(t_param *param);
+int				create_img(t_param *param);
 
 #endif

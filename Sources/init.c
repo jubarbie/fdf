@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 17:19:58 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/01 11:40:57 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/04/05 20:36:08 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,23 @@
 #include "get_next_line.h"
 #include "fdf.h"
 
+void		init_pos(t_param *param)
+{
+	ALT = 1;
+	POSX = 0;
+	POSY = 0;
+	PERS = 2;
+	ZOOM = 2;
+}
+
+int			allowed_char(char c)
+{
+	if (ft_isdigit(c) || c == '-' || c == ',' || c >= 'A' ||
+			c <= 'F' || c == 'x' || c == ' ')
+		return (1);
+	return (0);
+}
+
 int			nb_coord(char *str)
 {
 	int i;
@@ -24,9 +41,9 @@ int			nb_coord(char *str)
 	i = 0;
 	while (*str)
 	{
-		if (!(ft_isdigit(*str)) && *str != ' ')
+		if (!(allowed_char(*str)))
 			exit(EXIT_FAILURE);
-		if (*str != ' '  && (*(str + 1) == '\0' || *(str + 1) == ' '))
+		if (*str != ' ' && (*(str + 1) == '\0' || *(str + 1) == ' '))
 			i++;
 		str++;
 	}
@@ -38,31 +55,24 @@ static char	***create_map(t_param *param, char *file_name)
 	int		fd;
 	char	*line;
 	char	***tab;
-	int		i;
-	int		map_x;
 
 	if ((fd = open(file_name, O_RDONLY)) == -1)
 		exit(EXIT_FAILURE);
-	i = 0;
+	MAP_Y = 0;
 	while (get_next_line(fd, &line))
-	{
-		map_x = nb_coord(line);
-		i++;
-	}
+		MAP_Y++;
 	close(fd);
-	if (!(tab = malloc(sizeof(char **) * i)) ||
+	if (!(tab = malloc(sizeof(char **) * MAP_Y)) ||
 				((fd = open(file_name, O_RDONLY)) == -1))
 		exit(EXIT_FAILURE);
-	i = 0;
-	map_x = 100000000;
+	MAP_Y = 0;
+	MAP_X = 100000000;
 	while (get_next_line(fd, &line))
 	{
-		map_x = (nb_coord(line) < map_x) ? nb_coord(line) : map_x;
-		tab[i++] = ft_strsplit(line, ' ');
+		MAP_X = (nb_coord(line) < MAP_X) ? nb_coord(line) : MAP_X;
+		tab[MAP_Y++] = ft_strsplit(line, ' ');
 	}
 	close(fd);
-	MAP_Y = i;
-	MAP_X = map_x;
 	return (tab);
 }
 
@@ -78,17 +88,14 @@ t_param		*init_param(int size_x, int size_y, char *title, char *file_name)
 	get_img_param(param);
 	WIN_X = size_x;
 	WIN_Y = size_y;
-	POSX = (WIN_X / 2) - (WIDTH / 2);
-	POSY = 0;
 	BPP = 24;
 	SIZELINE = WIDTH * (BPP / 8);
 	ENDIAN = 0;
 	CT1 = 1;
 	CT2 = 1;
-	ALT = 1;
-	PERS = 2;
-	ZOOM = 2;
+	init_pos(param);
 	IMG = mlx_new_image(MLX, WIDTH, HEIGHT);
+	BIMG = mlx_new_image(MLX, WIN_X, WIN_Y);
 	IMG_ADDR = mlx_get_data_addr(IMG, &BPP, &SIZELINE, &ENDIAN);
 	return (param);
 }

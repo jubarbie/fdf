@@ -6,7 +6,7 @@
 #    By: jubarbie <jubarbie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/30 16:51:35 by jubarbie          #+#    #+#              #
-#    Updated: 2016/03/25 11:09:46 by jubarbie         ###   ########.fr        #
+#    Updated: 2016/04/05 20:51:01 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,8 @@ SRC=	ft_atoi.c \
 		ft_sqrt_up.c \
 		ft_convert_base.c \
 		ft_strrev.c \
-		ft_power_two.c
+		ft_power_two.c \
+		ft_abs.c
 OBJ=$(SRC:.c=.o)
 NAME=libft.a
 
