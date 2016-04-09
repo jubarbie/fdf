@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 10:48:32 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/05 20:45:36 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/04/07 17:01:20 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ void			img_draw_line(t_param *param, t_pix p1, t_pix p2);
 t_pix			get_pix(t_param *param, int i, int j);
 void			get_img_param(t_param *param);
 int				create_img(t_param *param);
+int				allowed_char(char c);
 
 #endif

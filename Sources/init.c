@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 17:19:58 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/05 20:36:08 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/04/09 08:20:33 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,22 @@ static char	***create_map(t_param *param, char *file_name)
 	int		fd;
 	char	*line;
 	char	***tab;
+	int		stop;
 
 	if ((fd = open(file_name, O_RDONLY)) == -1)
 		exit(EXIT_FAILURE);
 	MAP_Y = 0;
-	while (get_next_line(fd, &line))
+	while ((stop = get_next_line(fd, &line)) > 0)
 		MAP_Y++;
+	if (stop == -1 || MAP_Y == 0)
+		exit(EXIT_FAILURE);
 	close(fd);
 	if (!(tab = malloc(sizeof(char **) * MAP_Y)) ||
 				((fd = open(file_name, O_RDONLY)) == -1))
 		exit(EXIT_FAILURE);
 	MAP_Y = 0;
 	MAP_X = 100000000;
-	while (get_next_line(fd, &line))
+	while ((stop = get_next_line(fd, &line)) > 0)
 	{
 		MAP_X = (nb_coord(line) < MAP_X) ? nb_coord(line) : MAP_X;
 		tab[MAP_Y++] = ft_strsplit(line, ' ');
@@ -83,8 +86,8 @@ t_param		*init_param(int size_x, int size_y, char *title, char *file_name)
 	if (!(param = (t_param *)malloc(sizeof(t_param))))
 		exit(EXIT_FAILURE);
 	MLX = mlx_init();
-	WIN = mlx_new_window(MLX, size_x, size_y, title);
 	MAP = create_map(param, file_name);
+	WIN = mlx_new_window(MLX, size_x, size_y, title);
 	get_img_param(param);
 	WIN_X = size_x;
 	WIN_Y = size_y;
