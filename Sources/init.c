@@ -6,22 +6,17 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 17:19:58 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/09 08:20:33 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/27 09:45:00 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <fcntl.h>
-#include "libft.h"
-#include "mlx.h"
-#include "get_next_line.h"
 #include "fdf.h"
 
 void		init_pos(t_param *param)
 {
 	ALT = 1;
-	POSX = 0;
-	POSY = 0;
+	GAPX = 0;
+	GAPY = 0;
 	PERS = 2;
 	ZOOM = 2;
 }
@@ -61,7 +56,7 @@ static char	***create_map(t_param *param, char *file_name)
 		exit(EXIT_FAILURE);
 	MAP_Y = 0;
 	while ((stop = get_next_line(fd, &line)) > 0)
-		MAP_Y++;
+			MAP_Y++;
 	if (stop == -1 || MAP_Y == 0)
 		exit(EXIT_FAILURE);
 	close(fd);
@@ -75,6 +70,8 @@ static char	***create_map(t_param *param, char *file_name)
 		MAP_X = (nb_coord(line) < MAP_X) ? nb_coord(line) : MAP_X;
 		tab[MAP_Y++] = ft_strsplit(line, ' ');
 	}
+	if (MAP_X < 1)
+		exit(EXIT_FAILURE);
 	close(fd);
 	return (tab);
 }
@@ -85,20 +82,18 @@ t_param		*init_param(int size_x, int size_y, char *title, char *file_name)
 
 	if (!(param = (t_param *)malloc(sizeof(t_param))))
 		exit(EXIT_FAILURE);
-	MLX = mlx_init();
 	MAP = create_map(param, file_name);
+	MLX = mlx_init();
 	WIN = mlx_new_window(MLX, size_x, size_y, title);
-	get_img_param(param);
 	WIN_X = size_x;
 	WIN_Y = size_y;
 	BPP = 24;
-	SIZELINE = WIDTH * (BPP / 8);
+	SIZELINE = WIN_X * (BPP / 8);
 	ENDIAN = 0;
 	CT1 = 1;
 	CT2 = 1;
 	init_pos(param);
-	IMG = mlx_new_image(MLX, WIDTH, HEIGHT);
-	BIMG = mlx_new_image(MLX, WIN_X, WIN_Y);
+	IMG = mlx_new_image(MLX, WIN_X, WIN_Y);
 	IMG_ADDR = mlx_get_data_addr(IMG, &BPP, &SIZELINE, &ENDIAN);
 	return (param);
 }

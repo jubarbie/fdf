@@ -6,12 +6,21 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 10:48:32 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/07 17:01:20 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/27 09:35:41 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include </System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h>
+# include "mlx.h"
+# include "libft.h"
+# include "get_next_line.h"
+# include "math.h"
 
 # define MLX param->mlx
 # define WIN param->win
@@ -65,7 +74,7 @@ typedef struct	s_param
 	char	***map;
 	int		map_x;
 	int		map_y;
-	int		alt;
+	float	alt;
 	float	pers;
 	float	zoom;
 }				t_param;
@@ -83,7 +92,6 @@ void			init_pos(t_param *param);
 void			img_put_pixel(t_param *param, int x, int y, unsigned int color);
 void			img_draw_line(t_param *param, t_pix p1, t_pix p2);
 t_pix			get_pix(t_param *param, int i, int j);
-void			get_img_param(t_param *param);
 int				create_img(t_param *param);
 int				allowed_char(char c);
 

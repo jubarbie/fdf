@@ -6,15 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 18:20:39 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/05 20:54:47 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/27 09:55:36 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <math.h>
-#include "mlx.h"
 #include "fdf.h"
-#include "libft.h"
 
 static void	line_case1(t_param *param, t_pix p1, t_pix p2)
 {
@@ -106,9 +102,9 @@ static void	line_case4(t_param *param, t_pix p1, t_pix p2)
 
 void		img_draw_line(t_param *param, t_pix p1, t_pix p2)
 {
-	GAPX = get_pix(param, 0, MAP_Y - 1).x - get_pix(param, 0, 0).x - 5;
-	GAPY = 5000 - (get_pix(param, MAP_X - 1, MAP_Y - 1).y -
-					get_pix(param, 0, 0).y + 10) / 2;
+	GAPX = -WIN_X / 2 - get_pix(param, 0, MAP_Y - 1).x + get_pix(param, 0, 0).x;
+	GAPY = WIN_Y / 2 - (get_pix(param, MAP_X - 1, MAP_Y - 1).y -
+			get_pix(param, 0, 0).y + 10) / 2;
 	if (p1.x <= p2.x && (p2.x - p1.x) >= ft_abs(p2.y - p1.y))
 		line_case1(param, p1, p2);
 	else if (p1.x > p2.x && (p1.x - p2.x) >= ft_abs(p2.y - p1.y))

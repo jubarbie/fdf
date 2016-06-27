@@ -6,29 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/05 20:11:28 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/04/05 20:44:43 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/27 09:44:37 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <math.h>
-#include "mlx.h"
 #include "fdf.h"
-#include "libft.h"
-
-void	refresh_screen(t_param *param)
-{
-	int	x;
-	int	y;
-
-	y = -1;
-	while (++y < WIN_Y)
-	{
-		x = -1;
-		while (++x < WIN_X)
-			mlx_pixel_put(MLX, WIN, x, y, 0x00000000);
-	}
-}
 
 void	img_put_pixel(t_param *param, int x, int y, unsigned int color)
 {
@@ -39,9 +21,12 @@ void	img_put_pixel(t_param *param, int x, int y, unsigned int color)
 	b = ((color & 0xFF0000) >> 16);
 	g = ((color & 0xFF00) >> 8);
 	r = ((color & 0xFF));
-	IMG_ADDR[y * SIZELINE + x * (BPP / 8)] = r;
-	IMG_ADDR[y * SIZELINE + x * (BPP / 8) + 1] = g;
-	IMG_ADDR[y * SIZELINE + x * (BPP / 8) + 2] = b;
+	if ((x >= 0 && x < WIN_X) && (y >= 0 && y < WIN_Y))
+	{
+		IMG_ADDR[y * SIZELINE + x * (BPP / 8)] = r;
+		IMG_ADDR[y * SIZELINE + x * (BPP / 8) + 1] = g;
+		IMG_ADDR[y * SIZELINE + x * (BPP / 8) + 2] = b;
+	}
 }
 
 t_pix	get_pix(t_param *param, int i, int j)
@@ -62,15 +47,6 @@ t_pix	get_pix(t_param *param, int i, int j)
 	return (pix);
 }
 
-void	get_img_param(t_param *param)
-{
-	WIDTH = get_pix(param, MAP_X - 1, 0).x -
-			get_pix(param, 0, MAP_Y - 1).x + 10;
-	HEIGHT = 10000;
-	GX = (WIN_X / 2) - (WIDTH / 2);
-	GY = (WIN_Y / 2) - (HEIGHT / 2);
-}
-
 int		create_img(t_param *param)
 {
 	int	i;
@@ -78,8 +54,7 @@ int		create_img(t_param *param)
 
 	j = -1;
 	mlx_destroy_image(MLX, IMG);
-	get_img_param(param);
-	IMG = mlx_new_image(MLX, WIDTH, HEIGHT);
+	IMG = mlx_new_image(MLX, WIN_X, WIN_Y);
 	IMG_ADDR = mlx_get_data_addr(IMG, &BPP, &SIZELINE, &ENDIAN);
 	while (++j < MAP_Y)
 	{
@@ -94,7 +69,6 @@ int		create_img(t_param *param)
 													get_pix(param, i + 1, j));
 		}
 	}
-	mlx_put_image_to_window(MLX, WIN, BIMG, 0, 0);
-	mlx_put_image_to_window(MLX, WIN, IMG, GX + POSX, GY + POSY);
+	mlx_put_image_to_window(MLX, WIN, IMG, 0, 0);
 	return (0);
 }
