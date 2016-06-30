@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 10:47:22 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/06/27 09:56:06 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/30 15:46:21 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	check_good_file(char *file_name)
 void	move_img(int keycode, t_param *param)
 {
 	if (keycode == 0)
-		GAPX += 5;
+		POSX += 5;
 	if (keycode == 2)
-		GAPX -= 5;
+		POSX -= 5;
 	if (keycode == 13)
-		GAPY -= 5;
+		POSY -= 5;
 	if (keycode == 1)
-		GAPY += 5;
+		POSY += 5;
 }
 
 int		ft_key(int keycode, t_param *param)
@@ -51,17 +51,17 @@ int		ft_key(int keycode, t_param *param)
 	if (keycode == 5)
 		PERS -= (PERS > 1) ? 0.1 : 0;
 	if (keycode == 17)
-		PERS += (PERS < 4) ? 0.1 : 0;
+		PERS += (PERS < 10) ? 0.1 : 0;
 	if (keycode == 125)
-		ALT -= (ALT > -10) ? 0.2 : 0;
+		ALT -= (ALT > -50) ? 0.2 : 0;
 	if (keycode == 0 || keycode == 2 || keycode == 13 || keycode == 1)
 		move_img(keycode, param);
 	if (keycode == 126)
-		ALT += (ALT < 10) ? 0.2 : 0;
+		ALT += (ALT < 50) ? 0.2 : 0;
 	if (keycode == 78)
-		ZOOM -= (ZOOM > 0.1) ? 0.1 : 0;
+		ZOOM -= (ZOOM > 0.2) ? 0.1 : 0;
 	if (keycode == 69)
-		ZOOM += (ZOOM < 2.8) ? 0.1 : 0;
+		ZOOM += (ZOOM < 10) ? 0.1 : 0;
 	return (0);
 }
 

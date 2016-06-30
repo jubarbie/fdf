@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 17:19:58 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/06/27 09:45:00 by jubarbie         ###   ########.fr       */
+/*   Updated: 2016/06/30 15:02:52 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void		init_pos(t_param *param)
 {
 	ALT = 1;
-	GAPX = 0;
-	GAPY = 0;
+	POSX = 0;
+	POSY = 0;
 	PERS = 2;
 	ZOOM = 2;
 }
